@@ -8,9 +8,14 @@ red='\033[1;31m'
 no_style='\033[0m'
 ind='       '
 
+sdkSettings="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/SDKSettings.plist"
+
+# extract the origanal CODE_SIGNING_REQUIRED value to set to after script completes
+origanalCodeSign=$(plutil -extract DefaultProperties.CODE_SIGNING_REQUIRED raw "${sdkSettings}")
+
 # make sure the CODE_SIGNING_REQUIRED field of Xcode's SDKSettings.plist is set to NO
 # this makes it so that we will not need to have a Developer Account to export an IPA
-plutil -replace DefaultProperties.CODE_SIGNING_REQUIRED -string NO /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/SDKSettings.plist
+plutil -replace DefaultProperties.CODE_SIGNING_REQUIRED -string NO "${sdkSettings}"
 
 # if the script was not run with at least one argument, log an error and terminate the script
 if [ $# -lt 1 ]
@@ -89,11 +94,8 @@ then
     exit 1
 fi
 
-# move the app to the Desktop
-mv $APPNAME ~/Desktop
-
-# delete the archive as we do not need it anymore
-rm -r "$1"
+# copy the app to the Desktop
+cp -R "$APPNAME" ~/Desktop
 
 # cd to the Desktop
 cd ~/Desktop
@@ -105,10 +107,13 @@ mkdir Payload
 mv $APPNAME Payload
 
 # compress the Payload folder to a .zip folder called App
-zip -r App.zip Payload
+zip -ry App.zip Payload
 
 # final conversion from .zip to .ipa by simple renaming
 mv App.zip App.ipa
 
 # cleanup
 rm -r Payload
+
+# set the value of CODE_SIGNING_REQUIRED back to what was set prior to the script
+plutil -replace DefaultProperties.CODE_SIGNING_REQUIRED -string ${origanalCodeSign} "${sdkSettings}"
