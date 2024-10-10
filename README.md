@@ -1,6 +1,6 @@
 # ipagen
 
-ipagen is a small script that converts an `.xcarchive` file to an `.ipa` that can be sideloaded onto your iPhone using an outside application such as <a href="http://www.cydiaimpactor.com/">Cydia</a> without the long steps and the need for an Apple Developer Account. Tested and works as of Xcode version 10.1.
+ipagen is a small script that converts an `.xcarchive` file to an `.ipa` that can be sideloaded onto your iPhone using an outside application such as <a href="https://sideloadly.io/">Sideloadly</a> without the long steps and the need for an Apple Developer Account. Tested and works as of Xcode version 15.4.
 
 ## how-to-use
 
@@ -32,6 +32,6 @@ Fill in this `<file-path>` with the path of your `.xcarchive` by dragging it fro
 
 ![](./imgifs/archive5.gif)
 
-Once the script is finished, the newly generated `App.ipa` file should be sitting in your `Desktop` directory, ready to be sideloaded through Cydia.
+Once the script is finished, the newly generated `App.ipa` file should be sitting in your `Desktop` directory, ready to be sideloaded through Sideloadly.
 
 ![](./imgifs/archive6.png)
